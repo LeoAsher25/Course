@@ -1,0 +1,22 @@
+<div class="upload-file-container">
+  <div class="row">
+    <div class="col-6">
+      <h2>Upload single file</h2>
+      <form method="POST" action="/upload-file-save" enctype="multipart/form-data">
+        <div>
+          <input type="file" name="file-upload" id="single-file" />
+        </div>
+        <button type="submit" class="my-2">Save</button>
+      </form>
+    </div>
+    <div class="col-6">
+      <h2>Upload multiple file</h2>
+      <form method="POST" action="/upload-multiple-file-save" enctype="multipart/form-data">
+        <div>
+          <input type="file" name="file-upload" id="multiple-file" multiple="true" />
+        </div>
+        <button type="submit" class="my-2">Save</button>
+      </form>
+    </div>
+  </div>
+</div>

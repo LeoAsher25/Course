@@ -1,0 +1,6 @@
+<h3>Course List</h3>
+
+<div class="course-list row">
+  <% courses.forEach((course) => { %> <%- include('../partials/card.ejs' ,
+  {course}) %> <% }) %>
+</div>

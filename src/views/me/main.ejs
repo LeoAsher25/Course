@@ -1,0 +1,27 @@
+<div class="me-page">
+  <h3 class="mt-3 text-center">My courses</h4>
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Name</th> 
+        <th scope="col">Create at</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% courses.forEach((course, index) => { %>  
+        <tr>
+          <th scope="row"> <%= index + 1 %> </th>
+          <td> <%= course.name %> </td> 
+          <td> <%= course.createdAt %> </td>
+          <td>
+            <a href="edit/<%= course.slug %>" class="btn btn-outline-primary" role="button">Edit</a>
+            <a href="delete/<%= course.slug %>" class="btn btn-outline-primary" role="button">Delete</a>
+          </td>
+        </tr> 
+      <% }) %>
+      
+    </tbody>
+  </table>
+</div>
