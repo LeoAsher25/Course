@@ -1,15 +1,11 @@
-.app {
-  color: red;
-  font-size: 50px;
-}
+.form-label.required-field {
+  position: relative; }
+
+.form-label.required-field::after {
+  content: "*";
+  position: absolute;
+  display: inline;
+  color: red; }
 
 .main-container {
-  padding-top: 12px;
-}
-
-.book-detail {
-  margin-top: 20px;
-}
-.book-detail .book-thumbnail img {
-  width: 100%;
-}
+  padding-top: 12px; }

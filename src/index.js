@@ -15,6 +15,8 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// for parsing multipart/form-data
+
 app.use(
   session({
     secret: process.env.SESSION_SECRET_KEY, // Khóa bí mật để mã hóa session

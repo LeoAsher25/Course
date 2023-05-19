@@ -1,64 +1,143 @@
 <div class="create-book">
-  <h3><%= title %></h3>
+  <h3 class="mb-5"><%= title %></h3>
   <form
     method="POST"
-    action="<% if(typeof book == 'object' && book) { %> save/<%=book?.slug%> <% } else{ %> /books/store <% } %>"
-  >
+    enctype="multipart/form-data"
+    action="<%= (typeof book == 'object' && book) ? ('/' + book?.slug + '/edit') : '/add-book' %>">
+    <!-- action="<% if(typeof book == 'object' && book) { %> save/<%=book?.slug%> <% } else{ %> /books/store <% } %>"> -->
+ 
+</div>
     <div class="row">
       <div class="col-sm-6">
         <div class="mb-3">
-          <label for="bookName" class="form-label"> Name </label>
-          <% if(typeof book == 'object' && book) { %>
+          <label for="bookName" class="form-label required-field"> Name </label>
           <input
             type="text"
             class="form-control"
             id="bookName"
             name="name"
-            value="<%= book?.name %>"
-          />
-          <% } else{ %>
-          <input type="text" class="form-control" id="bookName" name="name" />
-          <% } %>
+            value="<%= (typeof book == 'object' && book) ? book.name : '' %>"
+            <%= !isEdit && "disabled" %>
+            />
+           
         </div>
         <div class="mb-3">
-          <label for="bookDescription" class="form-label"> Description </label>
-          <% if(typeof book == 'object' && book) { %>
+          <label for="bookDescription" class="form-label required-field">
+            Mô tả
+          </label>
           <textarea
+            <%= !isEdit && "disabled" %>
             type="text"
             class="form-control"
             id="bookDescription"
-            name="description"
-            value="<%= book?.description %>"
-          ></textarea>
+            name="description">
+<%= (typeof book == 'object' && book) ? book.description : '' %>
+        </textarea
+          >
+        </div>
+        <div class="row mb-3">
+          <div class="col col-sm-6">
+            <label for="author" class="form-label required-field">
+              Tác giả
+            </label>
+            <input
+              <%= !isEdit && "disabled" %>
+              type="text"
+              class="form-control"
+              id="author"
+              name="author"
+              value="<%= (typeof book == 'object' && book) ? book.author : '' %>" />
+          </div>
 
-          <% } else{ %>
-          <textarea
-            type="text"
-            class="form-control"
-            id="bookDescription"
-            name="description"
-          ></textarea>
-          <% } %>
+          <div class="col col-sm-6">
+            <label for="numberOfPages" class="form-label required-field">
+              Số trang
+            </label>
+            <input
+              <%= !isEdit && "disabled" %>
+              type="text"
+              class="form-control"
+              id="numberOfPages"
+              name="numberOfPages"
+              value="<%= (typeof book == 'object' && book) ? book.numberOfPages : '' %>" />
+          </div>
         </div>
-        <div class="mb-3">
-          <label for="bookImage" class="form-label"> Image Path </label>
-          <% if(typeof book == 'object' && book) { %>
-          <input
-            type="text"
-            class="form-control"
-            id="bookImage"
-            name="image"
-            value="<%= book?.image %>"
-          />
-          <% } else{ %>
-          <input type="text" class="form-control" id="bookImage" name="image" />
-          <% } %>
+
+        <div class="row mb-3">
+          <div class="col col-sm-6">
+            <label for="publishedAt" class="form-label required-field">
+              Ngày phát hành
+            </label>
+            <input
+              <%= !isEdit && "disabled" %>  
+              type="datetime-local"
+              class="form-control"
+              id="publishedAt"
+              name="publishedAt"
+              value="<%= (typeof book == 'object' && book) ? formatDate(book.publishedAt, true) : '' %>" />
+          </div>
+          <div class="col col-sm-6">
+            <label for="type" class="form-label required-field">
+              Thể loại
+            </label>
+            <input
+              <%= !isEdit && "disabled" %>
+              type="text"
+              class="form-control"
+              id="type"
+              name="type"
+              value="<%= (typeof book == 'object' && book) ? book.type : '' %>" />
+          </div>
         </div>
       </div>
 
-      <div class="col-sm-6"></div>
+      <div
+        class="col-sm-6 d-flex flex-column justify-content-start align-items-center">
+        <input
+          <%= !isEdit && "disabled" %>
+          type="file"
+          name="bookImage"
+          id="bookImage"
+          hidden
+          onchange="loadFile(event)" />
+        <label
+          for="bookImage"
+          class="btn <%= isEdit ? 'btn-primary' : 'btn-secondary' %>">
+          Upload
+        </label>
+        <img
+          src="<%= (typeof book == 'object' && book) ? book.imageUrl : '' %>"
+          id="previewImage"
+          style="margin-top: 16px; width: 500px; max-width: 90%" />
+      </div>
     </div>
 
-    <button type="submit" class="btn btn-primary">Submit</button>
+    <div class="d-flex justify-content-end mt-4">
+      <a href="/">
+        <button type="button" class="btn btn-outline-secondary mx-2">
+          Back
+        </button>
+      </a>
+
+      <% if (typeof book !== 'object' || !book) { %>
+      <button type="submit" class="btn btn-primary mx-2">Add</button>
+      <% } else if (isEdit) { %>
+      <button type="submit" class="btn btn-primary mx-2">Save</button>
+      <% } else { %>
+      <a href="/<%= book.slug %>/edit">
+        <button type="button" class="btn btn-primary mx-2">Edit</button>
+      </a>
+      <% } %>
+    </div>
   </form>
+
+  <script>
+    const loadFile = function (event) {
+      const previewImage = document.getElementById("previewImage");
+      previewImage.src = URL.createObjectURL(event.target.files[0]);
+      previewImage.onload = function () {
+        URL.revokeObjectURL(previewImage.src); // free memory
+      };
+    };
+  </script>
 </div>
