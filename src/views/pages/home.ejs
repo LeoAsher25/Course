@@ -1,7 +1,35 @@
-<a href="/courses">
-  <button class="btn btn-outline-primary">Go to Course List</button>
-</a>
-<!-- <div class="course-list row">
-  <% courses.forEach((course) => { %> <%- include('../partials/card.ejs' ,
-  {course}) %> <% }) %>
-</div> -->
+<div class="me-page">
+  <div class="d-flex justify-content-between align-items-center">
+    <h3 class="mt-3 text-center">Books List</h4>
+
+    <a href="/add-book">
+      <button class="btn btn-primary">
+        Add Book
+      </button>
+    </a>
+  </div>
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Name</th> 
+        <th scope="col">Create at</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% books.forEach((book, index) => { %>  
+        <tr>
+          <th scope="row"> <%= index + 1 %> </th>
+          <td> <%= book.name %> </td> 
+          <td> <%= book.createdAt %> </td>
+          <td>
+            <a href="edit/<%= book.slug %>" class="btn btn-outline-primary" role="button">Edit</a>
+            <a href="delete/<%= book.slug %>" class="btn btn-outline-primary" role="button">Delete</a>
+          </td>
+        </tr> 
+      <% }) %>
+      
+    </tbody>
+  </table>
+</div>

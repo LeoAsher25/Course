@@ -1,12 +1,8 @@
-const searchRouter = require("./search");
-const coursesRouter = require("./courses");
+const bookRouter = require("./book");
 const siteRouter = require("./site");
-const meRouter = require("./me");
 
 const route = (app) => {
-  app.use("/search", searchRouter);
-  app.use("/courses", coursesRouter);
-  app.use("/me", meRouter);
   app.use("/", siteRouter);
+  app.use("/", bookRouter);
 };
 module.exports = route;

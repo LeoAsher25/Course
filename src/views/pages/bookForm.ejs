@@ -1,0 +1,64 @@
+<div class="create-book">
+  <h3><%= title %></h3>
+  <form
+    method="POST"
+    action="<% if(typeof book == 'object' && book) { %> save/<%=book?.slug%> <% } else{ %> /books/store <% } %>"
+  >
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="mb-3">
+          <label for="bookName" class="form-label"> Name </label>
+          <% if(typeof book == 'object' && book) { %>
+          <input
+            type="text"
+            class="form-control"
+            id="bookName"
+            name="name"
+            value="<%= book?.name %>"
+          />
+          <% } else{ %>
+          <input type="text" class="form-control" id="bookName" name="name" />
+          <% } %>
+        </div>
+        <div class="mb-3">
+          <label for="bookDescription" class="form-label"> Description </label>
+          <% if(typeof book == 'object' && book) { %>
+          <textarea
+            type="text"
+            class="form-control"
+            id="bookDescription"
+            name="description"
+            value="<%= book?.description %>"
+          ></textarea>
+
+          <% } else{ %>
+          <textarea
+            type="text"
+            class="form-control"
+            id="bookDescription"
+            name="description"
+          ></textarea>
+          <% } %>
+        </div>
+        <div class="mb-3">
+          <label for="bookImage" class="form-label"> Image Path </label>
+          <% if(typeof book == 'object' && book) { %>
+          <input
+            type="text"
+            class="form-control"
+            id="bookImage"
+            name="image"
+            value="<%= book?.image %>"
+          />
+          <% } else{ %>
+          <input type="text" class="form-control" id="bookImage" name="image" />
+          <% } %>
+        </div>
+      </div>
+
+      <div class="col-sm-6"></div>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+</div>

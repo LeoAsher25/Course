@@ -1,12 +1,10 @@
 <div class="col-xs-12 col-sm-6 col-lg-4 col-xl-3 my-2">
   <div class="card" style="height: 100%">
-    <img src="<%= course.image %>" class="card-img-top" alt="..." />
+    <img src="<%= book.image %>" class="card-img-top" alt="..." />
     <div class="card-body">
-      <h5 class="card-title"><%= course.name %></h5>
-      <p class="card-text"><%= course.description %></p>
-      <a href="/courses/<%= course.slug %>" class="btn btn-primary"
-        >Learn now</a
-      >
+      <h5 class="card-title"><%= book.name %></h5>
+      <p class="card-text"><%= book.description %></p>
+      <a href="/books/<%= book.slug %>" class="btn btn-primary">Learn now</a>
     </div>
   </div>
 </div>

@@ -2,7 +2,7 @@ const { Schema, default: mongoose, Types } = require("mongoose");
 const slug = require("mongoose-slug-generator");
 mongoose.plugin(slug);
 
-const Course = new Schema(
+const Book = new Schema(
   {
     name: { type: String, maxlength: 255, required: true },
     description: { type: String, maxlength: 1000, required: true },
@@ -14,4 +14,4 @@ const Course = new Schema(
   }
 );
 
-module.exports = mongoose.model("Course", Course);
+module.exports = mongoose.model("Book", Book);

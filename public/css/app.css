@@ -1,11 +1,15 @@
 .app {
   color: red;
-  font-size: 50px; }
+  font-size: 50px;
+}
 
 .main-container {
-  padding-top: 12px; }
+  padding-top: 12px;
+}
 
-.course-detail {
-  margin-top: 20px; }
-  .course-detail .course-thumbnail img {
-    width: 100%; }
+.book-detail {
+  margin-top: 20px;
+}
+.book-detail .book-thumbnail img {
+  width: 100%;
+}

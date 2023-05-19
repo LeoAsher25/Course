@@ -1,35 +1,35 @@
-const Course = require("../models/Course");
+const Book = require("../models/Book");
 
 class MeController {
   async show(req, res, next) {
     try {
-      const courses = await Course.find({});
+      const books = await Book.find({});
       res.render("me/main", {
-        title: "Course List",
-        courses,
+        title: "Book List",
+        books,
       });
     } catch (error) {
       next(error);
     }
   }
 
-  async editCourse(req, res, next) {
-    const course = await Course.findOne({ slug: req.params.slug });
-    return res.render("pages/createCourse", {
-      title: "Edit a new Course",
-      course,
+  async editBook(req, res, next) {
+    const book = await Book.findOne({ slug: req.params.slug });
+    return res.render("pages/bookForm", {
+      title: "Edit a new Book",
+      book,
     });
   }
 
-  async editSaveCourse(req, res, next) {
-    await Course.findOneAndUpdate({ slug: req.params.slug }, req.body);
-    res.redirect("/me/courses");
+  async editSaveBook(req, res, next) {
+    await Book.findOneAndUpdate({ slug: req.params.slug }, req.body);
+    res.redirect("/me/books");
   }
 
-  async deleteCourse(req, res, next) {
+  async deleteBook(req, res, next) {
     try {
-      await Course.deleteOne({ slug: req.params.slug });
-      return res.redirect("/me/courses");
+      await Book.deleteOne({ slug: req.params.slug });
+      return res.redirect("/me/books");
     } catch (error) {
       next(error);
     }

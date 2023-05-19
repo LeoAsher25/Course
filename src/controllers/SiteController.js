@@ -1,4 +1,4 @@
-const Course = require("../models/Course");
+const Book = require("../models/Book");
 const User = require("../models/User");
 
 const JWT = require("jsonwebtoken");
@@ -17,17 +17,17 @@ const encodedToken = (userID) => {
 
 class SiteController {
   index(req, res, next) {
-    console.log("main home");
-    Course.find({})
-      .then((courses) => {
-        // res.json(courses);
+    const currentUser = req.session.currentUser;
+    console.log("currentUser:: ", currentUser);
+    Book.find({})
+      .then((books) => {
         res.render("pages/home", {
           title: "Homepage",
-          courses,
+          books,
+          currentUser,
         });
       })
       .catch((error) => {
-        // res.status(400).json({ error });
         next(error);
       });
   }
@@ -38,12 +38,6 @@ class SiteController {
   }
 
   upFileSave(req, res, next) {
-    // req.file conttains information of uploaded file
-    // req.body conains information of text fields, if there were any
-    // upload(req, res, function (err) {
-    // req.file contains information of uploaded file
-    // req.body contains information of text fields, if there were any
-
     // Display uploaded image for user validation
     res.send(
       `You have uploaded this image: <hr/><img src="/uploads/${req.file.filename}" width="500"><hr /><a href="./">Upload another image</a>`
@@ -73,32 +67,58 @@ class SiteController {
   }
 
   async signIn(req, res, next) {
-    console.log("Call to signIn function", req.body);
-    const { username, password } = req.body;
-    const foundUser = await User.findOne({ username, password });
-    if (!foundUser) {
-      return res.status(400).json({ error: { message: "Username or password is incorrect." } });
+    if (req.method === "GET") {
+      return res.render("pages/signIn.ejs", {
+        title: "Sign In",
+      });
+    } else {
+      const { email, password } = req.body;
+      const foundUser = await User.findOne({ email, password });
+      console.log("foundUser: ", foundUser);
+      if (!foundUser) {
+        return res.render("pages/signIn.ejs", {
+          title: "Sign In",
+          error: { message: "Email or password is incorrect." },
+        });
+      }
+
+      req.session.currentUser = {
+        firstName: foundUser.firstName,
+        lastName: foundUser.lastName,
+        email: foundUser.email,
+      };
+      res.redirect("/");
     }
-    const token = encodedToken(foundUser._id);
-    return res.status(200).json({
-      token,
-    });
+  }
+
+  async signOut(req, res, next) {
+    req.session.currentUser = null;
+    return res.redirect("/");
   }
 
   async signUp(req, res, next) {
-    const { firstName, lastName, email, password, username } = req.body;
+    const { firstName, lastName, email, password } = req.body;
 
     const foundUserByEmail = await User.findOne({ email });
     if (foundUserByEmail) {
-      return res.status(403).json({ error: { message: "Email is already in use." } });
+      return res
+        .status(403)
+        .json({ error: { message: "Email is already in use." } });
     }
 
-    const foundUserByUsername = await User.findOne({ username });
+    const foundUserByUsername = await User.findOne({ email });
     if (foundUserByUsername) {
-      return res.status(403).json({ error: { message: "Username is already in use." } });
+      return res
+        .status(403)
+        .json({ error: { message: "Username is already in use." } });
     }
 
-    const newUser = new User({ firstName, lastName, email, password, username });
+    const newUser = new User({
+      firstName,
+      lastName,
+      email,
+      password,
+    });
     newUser.save();
 
     const token = encodedToken(newUser._id);
